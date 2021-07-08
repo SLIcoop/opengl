@@ -1,12 +1,10 @@
-#include "widget.h"
-
-#include <QApplication>
+#include "glView.h"
+#include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
     QApplication a(argc, argv);
-    Widget w;
+    glView w;
     w.show();
     return a.exec();
 }
