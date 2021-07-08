@@ -1,14 +1,17 @@
+#ifndef WIDGET_H
+#define WIDGET_H
 #pragma once
 
-#include <QtWidgets/QWidget>
-#include "ui_glView.h"
-#include <QtOpenGL>
+#include <QtWidgets/QOpenGLWidget>
+#include <QTimer>
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include <QMouseEvent>
+#include <QtOpenGL/QGLWidget>
 #pragma comment(lib,"opengl32.lib")
 #pragma comment(lib,"GlU32.lib")
 
-class glView : public QGLWidget
+class Widget : public QGLWidget
 {
     Q_OBJECT
 
@@ -23,10 +26,11 @@ private:
     void resizeGL(int w, int h) override;
     void paintGL() override;
     void drawPyramid();
+    void drawPrisma();
+    void drawParall();
 
 public:
-    glView(QWidget *parent = Q_NULLPTR);
-
-private:
-    Ui::glViewClass ui;
+    Widget(QWidget *parent = nullptr);
+    ~Widget();
 };
+#endif // WIDGET_H
