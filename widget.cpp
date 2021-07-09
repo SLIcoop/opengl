@@ -7,29 +7,43 @@ Widget::Widget(QWidget *parent)
     const unsigned int SCR_H = 600;
     setWindowTitle("QT");
     setGeometry(400, 200, SCR_W, SCR_H);
+
 }
 
 Widget::~Widget()
 {
 }
 
-void Widget::mousePressEvent(QMouseEvent* mo)
+void Widget::mousePressEvent(QMouseEvent* event)
 {
-    mPos = mo->pos();
+    lastPos = event->pos();
 }
 
-void Widget::mouseMoveEvent(QMouseEvent* mo)
+void Widget::mouseMoveEvent(QMouseEvent* event)
 {
-    double M_PI = 3.14;
-    xRot = 1 / M_PI * (mo->pos().y() - mPos.y());
-    yRot = 1 / M_PI * (mo->pos().x() - mPos.x());
-    updateGL();
+    //double M_PI = 3.14;
+    //xRot = 1 / M_PI * (mo->pos().y() - mPos.y());
+    //yRot = 1 / M_PI * (mo->pos().x() - mPos.x());
+    //updateGL();
+    GLfloat dx = (GLfloat)(event->x() - lastPos.x()) / width();
+    GLfloat dy = (GLfloat)(event->y() - lastPos.y()) / height();
+
+    if (event->buttons() & Qt::LeftButton) {
+      rotationX += 180 * dy;
+      rotationY += 180 * dx;
+      updateGL();
+    } else if (event->buttons() & Qt::RightButton) {
+      rotationX += 180 * dy;
+      rotationZ += 180 * dx;
+      updateGL();
+    }
+    lastPos = event->pos();
 }
 
 void Widget::initializeGL()
 {
     glEnable(GL_DEPTH_TEST);
-
+    glShadeModel(GL_FLAT);
 }
 
 void Widget::resizeGL(int w, int h)
@@ -37,24 +51,29 @@ void Widget::resizeGL(int w, int h)
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glFrustum(-3, 3, -3, 3, 1, 5);
+    GLfloat x = (GLfloat)w / h;
+    //glFrustum(-3, 3, -3, 3, 1, 5);
+    glFrustum(-x, x, -1.0, 1.0, 4.0, 15.0);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void Widget::paintGL()
 {
     glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    glTranslatef(0, 0, -10.0);
+    glRotatef(rotationX, 1.0, 0.0, 0.0);
+    glRotatef(rotationY, 0.0, 1.0, 0.0);
+    glRotatef(rotationZ, 0.0, 0.0, 1.0);
+    //glRotatef(xRot, 1, 0, 0);
+    //glRotatef(yRot, 0, 1, 0);
 
-    glTranslatef(0, 0, -2);
-
-    glRotatef(xRot, 1, 0, 0);
-    glRotatef(yRot, 0, 1, 0);
-
-    //drawCube(0.5);
+    drawCube(0.5);
     //drawPyramid();
-    drawPrisma();
+    //drawPrisma();
     //drawParall();
 }
 
