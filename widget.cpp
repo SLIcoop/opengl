@@ -71,10 +71,10 @@ void Widget::paintGL()
     //glRotatef(xRot, 1, 0, 0);
     //glRotatef(yRot, 0, 1, 0);
 
-    drawCube(0.5);
+    //drawCube(0.5);
     //drawPyramid();
     //drawPrisma();
-    //drawParall();
+    drawParall();
 }
 
 void Widget::drawPyramid()

@@ -1,0 +1,6 @@
+#include "camera"
+
+camera::camera()
+{
+
+}
