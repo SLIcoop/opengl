@@ -1,2 +1,3 @@
 # opengl + qt + c++
-Zero C++ Knowladgev
+Zero C++ Knowledge
+
